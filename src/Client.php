@@ -149,20 +149,6 @@ class Client
     }
 
     /**
-     * @param Request $request
-     * @param string $resource
-     * @param string $version
-     * @return Request
-     */
-    protected function prepareRequest(Request $request, string $resource, string $version = null): Request
-    {
-        $request->setClient($this);
-        $request->setResource($resource);
-        $request->setVersion($version);
-        return $request;
-    }
-
-    /**
      * @return array
      */
     public function getVersions(): array

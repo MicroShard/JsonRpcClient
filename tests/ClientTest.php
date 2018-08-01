@@ -2,6 +2,7 @@
 
 namespace MicroShard\JsonRpcClient\Test;
 
+use MicroShard\JsonRpcClient\Client\Request;
 use MicroShard\JsonRpcClient\Test\Mocks\ExposedClient;
 use GuzzleHttp\Client as GuzzleClient;
 use MicroShard\JsonRpcClient\Test\Mocks\TestGuzzleClient;
@@ -48,5 +49,17 @@ class ClientTest extends TestCase
         $this->assertNull($client->exposedGetVersionForRequest('resource_a', 'method_c'));
         $this->assertEquals(1, $client->exposedGetVersionForRequest('resource_a', 'method_a'));
         $this->assertEquals(2, $client->exposedGetVersionForRequest('resource_a', 'method_b'));
+    }
+
+    public function testAuthentication()
+    {
+        $client = new ExposedClient('some.domain.com', ExposedClient::AUTH_MODE_STATIC_TOKEN, ['token' => '12345']);
+        $request = new Request();
+
+        $client->exposedSetAuthentication($request);
+        $data = $request->getData();
+
+        $this->assertArrayHasKey('auth', $data);
+        $this->assertArraySubset(['token' => '12345'], $data['auth']);
     }
 }

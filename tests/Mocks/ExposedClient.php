@@ -18,17 +18,6 @@ class ExposedClient extends Client
     }
 
     /**
-     * @param Request $request
-     * @param string $resource
-     * @param string|null $version
-     * @return Request
-     */
-    public function exposedPrepareRequest(Request $request, string $resource, string $version = null): Request
-    {
-        return $this->prepareRequest($request, $resource, $version);
-    }
-
-    /**
      * @param string $resource
      * @param string $method
      * @return string
@@ -36,5 +25,15 @@ class ExposedClient extends Client
     public function exposedGetVersionForRequest(string $resource, string $method): ?string
     {
         return $this->getVersionForRequest($resource, $method);
+    }
+
+    /**
+     * @param Request $request
+     * @return Client
+     */
+    public function exposedSetAuthentication(Request $request): Client
+    {
+        $this->setAuthentication($request);
+        return $this;
     }
 }
