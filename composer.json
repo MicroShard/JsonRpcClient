@@ -1,0 +1,31 @@
+{
+  "name": "microshard/jsonrpcclient",
+  "description": "A basic client for communicating with a JsonRpcServer API (microshard/jsonrpcserver)",
+  "type": "library",
+  "authors": [{
+    "name": "Rene Winklewski",
+    "email": "rene.winklewski@gmail.com"
+  }],
+  "keywords": [
+    "Json",
+    "Rpc",
+    "Api",
+    "Client"
+  ],
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "MicroShard\\JsonRpcClient\\" : "src/",
+      "MicroShard\\JsonRpcClient\\Test\\" : "tests/"
+    }
+  },
+  "require": {
+    "php": "^7.0",
+    "guzzlehttp/guzzle": "^6"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.5 || ^7.0",
+    "php-mock/php-mock": "^2.0"
+  }
+}

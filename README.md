@@ -1,2 +1,2 @@
 # JsonRpcClient
-basic client for commuincation with JsonRpcServer
+basic client for communication with JsonRpcServer
