@@ -81,7 +81,7 @@ class Response
     /**
      * @return int
      */
-    public function getStatusCode(): int
+    public function getStatusCode()
     {
         return $this->statusCode;
     }
@@ -89,7 +89,7 @@ class Response
     /**
      * @return int
      */
-    public function getErrorCode(): int
+    public function getErrorCode()
     {
         return $this->errorCode;
     }
@@ -105,7 +105,7 @@ class Response
     /**
      * @return string
      */
-    public function getMessage(): string
+    public function getMessage()
     {
         return $this->message;
     }

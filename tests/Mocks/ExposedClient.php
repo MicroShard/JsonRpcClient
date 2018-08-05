@@ -22,7 +22,7 @@ class ExposedClient extends Client
      * @param string $method
      * @return string
      */
-    public function exposedGetVersionForRequest(string $resource, string $method): ?string
+    public function exposedGetVersionForRequest(string $resource, string $method)
     {
         return $this->getVersionForRequest($resource, $method);
     }

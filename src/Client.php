@@ -44,15 +44,18 @@ class Client
     private $guzzleFactory;
 
     /**
-     * @param string $baseUrl
-     * @param string $authMode
-     * @param array|null $authData
+     * @var \Closure
      */
-    public function __construct(string $baseUrl, string $authMode, array $authData = null)
+    private $authFactory;
+
+    /**
+     * @param string $baseUrl
+     * @param \Closure|null $authFactory
+     */
+    public function __construct(string $baseUrl, \Closure $authFactory = null)
     {
         $this->baseUrl = $baseUrl;
-        $this->authMode = $authMode;
-        $this->authData = $authData;
+        $this->authFactory = $authFactory;
         $this->guzzleFactory = function (){
             return new GuzzleClient();
         };
@@ -74,15 +77,8 @@ class Client
      */
     protected function setAuthentication(Request $request): Client
     {
-        switch ($this->authMode){
-            case self::AUTH_MODE_STATIC_TOKEN:
-                $request->setAuthentication([
-                    'token' => $this->authData['token']
-                ]);
-                break;
-            case self::AUTH_MODE_NONE:
-            default:
-                //nothing
+        if ($this->authFactory) {
+            $request->setAuthentication(($this->authFactory)());
         }
         return $this;
     }
@@ -92,7 +88,7 @@ class Client
      * @param string $method
      * @return string
      */
-    protected function getVersionForRequest(string $resource, string $method): ?string
+    protected function getVersionForRequest(string $resource, string $method)
     {
         if (isset($this->versions[$resource]) && isset($this->versions[$resource][$method])) {
             return $this->versions[$resource][$method];
@@ -136,13 +132,12 @@ class Client
         $url = rtrim($this->baseUrl, '/') . '/' . $request->getResource() . '/' . $request->getMethod();
         $response = $this->getGuzzle()->post($url, [RequestOptions::JSON => $request->getData()]);
 
-        if ($response->getStatusCode() != 200) {
+        $responseData = ($response->getBody() && $response->getStatusCode() == 200) ? json_decode($response->getBody(), true) : null;
+        if (!$responseData) {
             $responseData = [
                 'error' => $response->getStatusCode(),
                 'message' => 'invalid response'
             ];
-        } else {
-            $responseData = json_decode($response->getBody(), true);
         }
 
         return $request->createResponse($responseData);
