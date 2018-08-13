@@ -12,7 +12,7 @@ class Proxy
      * @param Client $client
      * @param ServerRequestInterface $request
      */
-    public function run(Client $client, ServerRequestInterface $request): void
+    public function run(Client $client, ServerRequestInterface $request)
     {
         $rawData = $request->getBody();
         $data = json_decode($rawData, true);
