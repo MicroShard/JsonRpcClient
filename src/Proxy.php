@@ -36,7 +36,7 @@ class Proxy
     /**
      * @param array $data
      */
-    protected function sendJsonResponse(array $data): void
+    protected function sendJsonResponse(array $data)
     {
         $content = json_encode($data);
 
