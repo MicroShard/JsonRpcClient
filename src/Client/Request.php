@@ -85,10 +85,10 @@ class Request
     }
 
     /**
-     * @param int $version
+     * @param string $version
      * @return Request
      */
-    public function setVersion(string $version): Request
+    public function setVersion(string $version = null): Request
     {
         $this->version = $version;
         return $this;

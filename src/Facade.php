@@ -4,7 +4,7 @@ namespace MicroShard\JsonRpcClient;
 
 use MicroShard\JsonRpcClient\Client\Request;
 
-class Facade
+abstract class Facade
 {
 
     /**

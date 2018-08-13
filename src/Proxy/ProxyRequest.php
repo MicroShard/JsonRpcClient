@@ -18,6 +18,8 @@ class ProxyRequest extends Request
     public function setData(array $data): ProxyRequest
     {
         $this->proxyData = $data;
+        $this->setResource($data['resource']);
+        $this->setMethod($data['method']);
         return $this;
     }
 
