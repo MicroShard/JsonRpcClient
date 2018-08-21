@@ -46,6 +46,16 @@ class Client
     /**
      * @var \Closure
      */
+    private $requestIdFactory;
+
+    /**
+     * @var string
+     */
+    private $lastRequestId;
+
+    /**
+     * @var \Closure
+     */
     private $authFactory;
 
     /**
@@ -58,6 +68,9 @@ class Client
         $this->authFactory = $authFactory;
         $this->guzzleFactory = function (){
             return new GuzzleClient();
+        };
+        $this->requestIdFactory = function(){
+            return time() . '-' . $this->lastRequestId++;
         };
     }
 
@@ -72,6 +85,16 @@ class Client
     }
 
     /**
+     * @param \Closure $factory
+     * @return Client
+     */
+    public function setRequestIdFactory(\Closure $factory): Client
+    {
+        $this->requestIdFactory = $factory;
+        return $this;
+    }
+
+    /**
      * @param Request $request
      * @return $this
      */
@@ -79,6 +102,14 @@ class Client
     {
         if ($this->authFactory) {
             $request->setAuthentication(($this->authFactory)());
+        }
+        return $this;
+    }
+
+    protected function setRequestId(Request $request): Client
+    {
+        if ($this->requestIdFactory) {
+            $request->setRequestId(($this->requestIdFactory)());
         }
         return $this;
     }
@@ -103,6 +134,7 @@ class Client
     public function send(Request $request): Response
     {
         $this->setAuthentication($request);
+        $this->setRequestId($request);
         if (!$request->getVersion()) {
             if ($version = $this->getVersionForRequest($request->getResource(), $request->getMethod())) {
                 $request->setVersion($version);

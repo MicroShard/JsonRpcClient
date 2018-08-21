@@ -27,6 +27,11 @@ class Request
     protected $auth;
 
     /**
+     * @var string
+     */
+    protected $requestId;
+
+    /**
      * @var array
      */
     protected $payload = [];
@@ -85,6 +90,16 @@ class Request
     }
 
     /**
+     * @param string $id
+     * @return Request
+     */
+    public function setRequestId(string $id): Request
+    {
+        $this->requestId = $id;
+        return $this;
+    }
+
+    /**
      * @param string $version
      * @return Request
      */
@@ -125,6 +140,9 @@ class Request
         ];
         if ($this->version) {
             $data['version'] = $this->version;
+        }
+        if ($this->requestId) {
+            $data['id'] = $this->requestId;
         }
         if ($this->auth) {
             $data['auth'] = $this->auth;
