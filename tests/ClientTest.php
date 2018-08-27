@@ -148,6 +148,10 @@ class ClientTest extends TestCase
             ]
         ]);
 
+        $client->setRequestIdFactory(function(){
+            return '123456';
+        });
+
         $request = new Request();
         $request->setResource('test_resource')
             ->setMethod('test_method')
@@ -175,7 +179,8 @@ class ClientTest extends TestCase
             'method' => 'test_method',
             'version' => 5,
             'auth' => ['token' => '12345'],
-            'payload' => ['some' => 'data']
+            'payload' => ['some' => 'data'],
+            'id' => '123456'
         ], $options['json']);
     }
 
